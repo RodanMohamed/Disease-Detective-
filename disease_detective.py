@@ -291,7 +291,7 @@ if selected == "🧠 Parkinson’s Prediction":
 import pickle
 
 # Load the scaler, NCA, and KNN models from the file
-with open('C:/Users/ALRWOAD LABTOB/Documents/Study/medical website/breast_cancer_model.sav', 'rb') as file:
+with open('C:/Users/ALRWOAD LABTOB/Documents/Study/medical website/breast_cancer_model1.sav', 'rb') as file:
     loaded_scaler, loaded_nca, loaded_knn_nca = pickle.load(file)
 
 # Define a function to make predictions using the loaded models
