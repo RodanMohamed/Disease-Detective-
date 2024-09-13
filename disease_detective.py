@@ -467,9 +467,15 @@ if selected == '🦠 Kidney Disease Prediction':
 
 
 # Hapitatis Prediction Page
+import pickle
+
+with open('hepatitis_model.sav', 'rb') as file:
+    hepatitis_model = pickle.load(file)
+
 if selected == '🦠 Hepatitis Disease Prediction':
     # Page header for Hepatitis Prediction
     st.header('🦠 Hepatitis Disease Prediction')
+    st.write("Hepatitis Prediction Page Loaded")
 
     col1, col2, col3 = st.columns(3)
 
