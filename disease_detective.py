@@ -476,7 +476,7 @@ with open('Hepatitis_model.sav', 'rb') as file:
 
 # Define a function to make predictions using the loaded model
 def predict_hepatitis(input_data):
-    # Here we assume the model directly takes the input_data and predicts
+    # Predict using the loaded model
     prediction = hepatitis_model.predict([input_data])
 
     # Map prediction to diagnosis
@@ -492,7 +492,6 @@ def predict_hepatitis(input_data):
 
 # Hepatitis Prediction Page
 if selected == '🦠 Hepatitis Disease Prediction':
-    # Page header for Hepatitis Prediction
     st.header('🦠 Hepatitis Disease Prediction')
     st.write("Hepatitis Prediction Page Loaded")
 
@@ -514,8 +513,15 @@ if selected == '🦠 Hepatitis Disease Prediction':
     col_index = 0
     for label, key in fields.items():
         value = st.session_state.input_values.get(key, '')
-        with [col1, col2, col3][col_index]:
-            st.session_state.input_values[key] = st.text_input(label, value=value)
+        if col_index == 0:
+            with col1:
+                st.session_state.input_values[key] = st.text_input(label, value=value)
+        elif col_index == 1:
+            with col2:
+                st.session_state.input_values[key] = st.text_input(label, value=value)
+        else:
+            with col3:
+                st.session_state.input_values[key] = st.text_input(label, value=value)
         col_index = (col_index + 1) % 3
 
     # Prediction button and result display
