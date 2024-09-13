@@ -491,66 +491,75 @@ def predict_hepatitis(input_data):
     return diagnosis_mapping.get(prediction[0], 'Unknown')
 
 # Hepatitis Prediction Page
+import pickle
+import streamlit as st
+
+# Load the model from the file
+with open('Hepatitis_model.sav', 'rb') as file:
+    hepatitis_model = pickle.load(file)
+
+# Hepatitis Prediction Page
 if selected == '🦠 Hepatitis Disease Prediction':
     st.header('🦠 Hepatitis Disease Prediction')
     st.write("Hepatitis Prediction Page Loaded")
 
-    # Define fields and their labels
-    fields = {
-        'Age': 'age', 'Sex': 'sex', 'Albumin Level (ALB)': 'alb',
-        'Alkaline Phosphatase (ALP)': 'alp', 'Alanine Aminotransferase (ALT)': 'alt',
-        'Aspartate Aminotransferase (AST)': 'ast', 'Bilirubin Level (BIL)': 'bil',
-        'Cholinesterase (CHE)': 'che', 'Cholesterol (CHOL)': 'chol',
-        'Creatinine (CREA)': 'crea', 'Gamma-Glutamyl Transferase (GGT)': 'ggt'
-    }
-
-    # Initialize session state for inputs
-    if 'input_values' not in st.session_state:
-        st.session_state.input_values = {key: '' for key in fields.values()}
-
-    # Populate input fields
+    # Define columns
     col1, col2, col3 = st.columns(3)
-    col_index = 0
-    for label, key in fields.items():
-        value = st.session_state.input_values.get(key, '')
-        if col_index == 0:
-            with col1:
-                st.session_state.input_values[key] = st.text_input(label, value=value)
-        elif col_index == 1:
-            with col2:
-                st.session_state.input_values[key] = st.text_input(label, value=value)
-        else:
-            with col3:
-                st.session_state.input_values[key] = st.text_input(label, value=value)
-        col_index = (col_index + 1) % 3
 
-    # Prediction button and result display
+    # Input fields
+    with col1:
+        Age = st.text_input('👵 Age')
+    with col2:
+        Sex = st.selectbox('👤 Sex', options=['Male', 'Female'])
+    with col3:
+        ALB = st.text_input('🍶 Albumin Level (ALB)')
+    with col1:
+        ALP = st.text_input('🔬 Alkaline Phosphatase (ALP)')
+    with col2:
+        ALT = st.text_input('🧪 Alanine Aminotransferase (ALT)')
+    with col3:
+        AST = st.text_input('🧬 Aspartate Aminotransferase (AST)')
+    with col1:
+        BIL = st.text_input('🩸 Bilirubin Level (BIL)')
+    with col2:
+        CHE = st.text_input('🧫 Cholinesterase (CHE)')
+    with col3:
+        CHOL = st.text_input('🌟 Cholesterol (CHOL)')
+    with col1:
+        CREA = st.text_input('🧪 Creatinine (CREA)')
+    with col2:
+        GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
+
+    # Button to get prediction
     if st.button('Get Hepatitis Test Result'):
         # Check if all fields are filled
-        if not all(st.session_state.input_values.values()):
+        if not all([Age, Sex, ALB, ALP, ALT, AST, BIL, CHE, CHOL, CREA, GGT]):
             st.warning("Please enter all the required information to help us provide a diagnosis.")
         else:
             try:
-                # Prepare user input
-                sex_value = 1 if st.session_state.input_values['sex'] == 'Male' else 0
-                user_input = [
-                    float(st.session_state.input_values['age']),
-                    sex_value,
-                    float(st.session_state.input_values['alb']),
-                    float(st.session_state.input_values['alp']),
-                    float(st.session_state.input_values['alt']),
-                    float(st.session_state.input_values['ast']),
-                    float(st.session_state.input_values['bil']),
-                    float(st.session_state.input_values['che']),
-                    float(st.session_state.input_values['chol']),
-                    float(st.session_state.input_values['crea']),
-                    float(st.session_state.input_values['ggt'])
-                ]
-
-                # Use the loaded model to predict
-                hepatitis_diagnosis = predict_hepatitis(user_input)
+                # Convert Sex to numerical value (assuming 0 for Female and 1 for Male)
+                sex_value = 1 if Sex == 'Male' else 0
                 
-                # Display the result
-                st.success(f'The diagnosis is: {hepatitis_diagnosis}')
+                # Prepare user input
+                user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
+                
+                # Predict using the loaded model
+                hepatitis_prediction = hepatitis_model.predict([user_input])
+                
+                # Display the diagnosis
+                diagnosis = ''
+                if hepatitis_prediction[0] == 0:
+                    diagnosis = 'Blood Donor'
+                elif hepatitis_prediction[0] == 1:
+                    diagnosis = 'Hepatitis'
+                elif hepatitis_prediction[0] == 2:
+                    diagnosis = 'Fibrosis'
+                elif hepatitis_prediction[0] == 3:
+                    diagnosis = 'Cirrhosis'
+                elif hepatitis_prediction[0] == 4:
+                    diagnosis = 'Suspect Blood Donor'
+                
+                st.success(f'The diagnosis is: {diagnosis}')
+                
             except Exception as e:
                 st.error(f"Problem occurred: {e}")
