@@ -465,3 +465,69 @@ if selected == '🦠 Kidney Disease Prediction':
             except Exception as e:
                 st.error(f"An error occurred: {e}")
 
+
+# Hapitatis Prediction Page
+if selected == '🦠 Hepatitis Disease Prediction':
+    # Page header for Hepatitis Prediction
+    st.header('🦠 Hepatitis Disease Prediction')
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        Age = st.text_input('👵 Age')
+    with col2:
+        Sex = st.selectbox('👤 Sex', options=['Male', 'Female'])
+    with col3:
+        ALB = st.text_input('🍶 Albumin Level (ALB)')
+    with col1:
+        ALP = st.text_input('🔬 Alkaline Phosphatase (ALP)')
+    with col2:
+        ALT = st.text_input('🧪 Alanine Aminotransferase (ALT)')
+    with col3:
+        AST = st.text_input('🧬 Aspartate Aminotransferase (AST)')
+    with col1:
+        BIL = st.text_input('🩸 Bilirubin Level (BIL)')
+    with col2:
+        CHE = st.text_input('🧫 Cholinesterase (CHE)')
+    with col3:
+        CHOL = st.text_input('🌟 Cholesterol (CHOL)')
+    with col1:
+        CREA = st.text_input('🧪 Creatinine (CREA)')
+    with col2:
+        GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
+
+    hepatitis_diagnosis = ''
+    create_button_style()
+
+    if st.button('Get Hepatitis Test Result'):
+        # Check if all fields are filled
+        if not all([Age, Sex, ALB, ALP, ALT, AST, BIL, CHE, CHOL, CREA, GGT]):
+            st.warning("Please enter all the required information to help us provide a diagnosis.")
+        else:
+            try:
+                # Convert Sex to numerical value (assuming 0 for Female and 1 for Male)
+                sex_value = 1 if Sex == 'Male' else 0
+                
+                # Prepare user input
+                user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
+                
+                # Predict using the loaded model
+                hepatitis_prediction = hepatitis_model.predict([user_input])
+                
+                # Display the diagnosis
+                diagnosis = ''
+                if hepatitis_prediction[0] == 0:
+                    diagnosis = 'Blood Donor'
+                elif hepatitis_prediction[0] == 1:
+                    diagnosis = 'Hepatitis'
+                elif hepatitis_prediction[0] == 2:
+                    diagnosis = 'Fibrosis'
+                elif hepatitis_prediction[0] == 3:
+                    diagnosis = 'Cirrhosis'
+                elif hepatitis_prediction[0] == 4:
+                    diagnosis = 'Suspect Blood Donor'
+                
+                st.success(f'The diagnosis is: {diagnosis}')
+                
+            except Exception as e:
+                st.error(f"Problem occurred: {e}")
