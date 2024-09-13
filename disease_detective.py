@@ -471,7 +471,7 @@ import streamlit as st
 import pickle
 
 # Load the model
-with open('Hepatitis_model.sav', 'rb') as file:
+with open('Hepatitis_model .sav', 'rb') as file:
     hepatitis_model = pickle.load(file)
 
 # Define a function to make predictions using the loaded model
