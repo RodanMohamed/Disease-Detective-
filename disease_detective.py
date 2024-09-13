@@ -469,7 +469,7 @@ if selected == '🦠 Kidney Disease Prediction':
 # Hapitatis Prediction Page
 import pickle
 
-with open('hepatitis_model.sav', 'rb') as file:
+with open('Hepatitis_model.sav', 'rb') as file:
     hepatitis_model = pickle.load(file)
 
 if selected == '🦠 Hepatitis Disease Prediction':
