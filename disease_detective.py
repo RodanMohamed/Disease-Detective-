@@ -499,8 +499,8 @@ with open('Hepatitis_model.sav', 'rb') as file:
     hepatitis_model = pickle.load(file)
 
 # Hepatitis Prediction Page
-if selected == '🦠 Hepatitis Disease Prediction':
-    st.header('🦠 Hepatitis Disease Prediction')
+if selected == '🩸 Hepatitis Disease Prediction':
+    st.header('🩸 Hepatitis Disease Prediction')
     st.write("Hepatitis Prediction Page Loaded")
 
     # Define columns
