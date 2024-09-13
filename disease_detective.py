@@ -126,7 +126,7 @@ if selected == '🦠 Kidney Disease Prediction':
     # (Rest of the code for Kidney Disease Prediction)
 # Function to display welcome message
 def display_welcome_message():
-    st.markdown("<h1 style='text-align: center; color: #008CBA; font-size: 40px; margin-top: -160px;'>Welcome to Disease Detective👾</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #008CBA; font-size: 40px; margin-top: -190px;'>Welcome to Disease Detective👾</h1>", unsafe_allow_html=True)
 # Check if a prediction page is selected and if the welcome message hasn't been shown
 if selected in ['🩺 Diabetes Prediction', '❤️ Heart Disease Prediction', '🧠 Parkinson’s Prediction', '🎀 Breast Cancer Prediction', '🦠 Kidney Disease Prediction']:
     if 'welcome_message_shown' not in st.session_state or not st.session_state.welcome_message_shown:
