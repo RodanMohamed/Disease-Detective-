@@ -500,8 +500,8 @@ with open('Hepatitis_model.sav', 'rb') as file:
 
 # Hepatitis Prediction Page
 if selected == '🩸 Hepatitis Disease Prediction':
-    st.header('🩸 Hepatitis Disease Prediction')
-    st.write("Hepatitis Prediction Page Loaded")
+   # st.header('🩸 Hepatitis Disease Prediction')
+   # st.write("Hepatitis Prediction Page Loaded")
 
     # Define columns
     col1, col2, col3 = st.columns(3)
