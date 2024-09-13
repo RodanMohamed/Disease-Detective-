@@ -467,8 +467,10 @@ if selected == '🦠 Kidney Disease Prediction':
 
 
 # Hapitatis Prediction Page
+import streamlit as st
 import pickle
 
+# Load the model
 with open('Hepatitis_model.sav', 'rb') as file:
     hepatitis_model = pickle.load(file)
 
@@ -477,6 +479,7 @@ if selected == '🦠 Hepatitis Disease Prediction':
     st.header('🦠 Hepatitis Disease Prediction')
     st.write("Hepatitis Prediction Page Loaded")
 
+    # Create input fields for user
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -485,36 +488,37 @@ if selected == '🦠 Hepatitis Disease Prediction':
         Sex = st.selectbox('👤 Sex', options=['Male', 'Female'])
     with col3:
         ALB = st.text_input('🍶 Albumin Level (ALB)')
+    
     with col1:
         ALP = st.text_input('🔬 Alkaline Phosphatase (ALP)')
     with col2:
         ALT = st.text_input('🧪 Alanine Aminotransferase (ALT)')
     with col3:
         AST = st.text_input('🧬 Aspartate Aminotransferase (AST)')
+    
     with col1:
         BIL = st.text_input('🩸 Bilirubin Level (BIL)')
     with col2:
         CHE = st.text_input('🧫 Cholinesterase (CHE)')
     with col3:
         CHOL = st.text_input('🌟 Cholesterol (CHOL)')
+    
     with col1:
         CREA = st.text_input('🧪 Creatinine (CREA)')
     with col2:
         GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
 
-    hepatitis_diagnosis = ''
-    create_button_style()
-
+    # Button for prediction
     if st.button('Get Hepatitis Test Result'):
         # Check if all fields are filled
         if not all([Age, Sex, ALB, ALP, ALT, AST, BIL, CHE, CHOL, CREA, GGT]):
             st.warning("Please enter all the required information to help us provide a diagnosis.")
         else:
             try:
-                # Convert Sex to numerical value (assuming 0 for Female and 1 for Male)
+                # Convert inputs to appropriate types
                 sex_value = 1 if Sex == 'Male' else 0
                 
-                # Prepare user input
+                # Prepare user input for prediction
                 user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
                 
                 # Predict using the loaded model
