@@ -529,7 +529,7 @@ if selected == '🩸 Hepatitis Disease Prediction':
         CREA = st.text_input('🧪 Creatinine (CREA)')
     with col2:
         GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
-
+    create_button_style()
     # Button to get prediction
     if st.button('Get Hepatitis Test Result'):
         # Check if all fields are filled
@@ -548,7 +548,7 @@ if selected == '🩸 Hepatitis Disease Prediction':
                 
                 # Display the diagnosis
                 diagnosis = ''
-                create_button_style()
+                
                 if hepatitis_prediction[0] == 0:
                     diagnosis = 'Blood Donor'
                 elif hepatitis_prediction[0] == 1:
