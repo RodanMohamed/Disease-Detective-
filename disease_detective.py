@@ -130,7 +130,7 @@ if selected == '🩸 Hepatitis Disease Prediction':
     # (Rest of the code for Kidney Disease Prediction)
 # Function to display welcome message
 def display_welcome_message():
-    st.markdown("<h1 style='text-align: center; color: #008CBA; font-size: 40px; margin-top: -190px;'>Welcome to Disease Detective👾</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #008CBA; font-size: 40px; margin-top: -185px;'>Welcome to Disease Detective👾</h1>", unsafe_allow_html=True)
 # Check if a prediction page is selected and if the welcome message hasn't been shown
 if selected in ['🩺 Diabetes Prediction', '❤️ Heart Disease Prediction', '🧠 Parkinson’s Prediction', '🎀 Breast Cancer Prediction', '🦠 Kidney Disease Prediction','🩸 Hepatitis Disease Prediction']:
     if 'welcome_message_shown' not in st.session_state or not st.session_state.welcome_message_shown:
@@ -474,70 +474,77 @@ import pickle
 with open('Hepatitis_model.sav', 'rb') as file:
     hepatitis_model = pickle.load(file)
 
+# Define a function to make predictions using the loaded model
+def predict_hepatitis(input_data):
+    # Here we assume the model directly takes the input_data and predicts
+    prediction = hepatitis_model.predict([input_data])
+
+    # Map prediction to diagnosis
+    diagnosis_mapping = {
+        0: 'Blood Donor',
+        1: 'Hepatitis',
+        2: 'Fibrosis',
+        3: 'Cirrhosis',
+        4: 'Suspect Blood Donor'
+    }
+
+    return diagnosis_mapping.get(prediction[0], 'Unknown')
+
+# Hepatitis Prediction Page
 if selected == '🦠 Hepatitis Disease Prediction':
     # Page header for Hepatitis Prediction
     st.header('🦠 Hepatitis Disease Prediction')
     st.write("Hepatitis Prediction Page Loaded")
 
-    # Create input fields for user
+    # Define fields and their labels
+    fields = {
+        'Age': 'age', 'Sex': 'sex', 'Albumin Level (ALB)': 'alb',
+        'Alkaline Phosphatase (ALP)': 'alp', 'Alanine Aminotransferase (ALT)': 'alt',
+        'Aspartate Aminotransferase (AST)': 'ast', 'Bilirubin Level (BIL)': 'bil',
+        'Cholinesterase (CHE)': 'che', 'Cholesterol (CHOL)': 'chol',
+        'Creatinine (CREA)': 'crea', 'Gamma-Glutamyl Transferase (GGT)': 'ggt'
+    }
+
+    # Initialize session state for inputs
+    if 'input_values' not in st.session_state:
+        st.session_state.input_values = {key: '' for key in fields.values()}
+
+    # Populate input fields
     col1, col2, col3 = st.columns(3)
+    col_index = 0
+    for label, key in fields.items():
+        value = st.session_state.input_values.get(key, '')
+        with [col1, col2, col3][col_index]:
+            st.session_state.input_values[key] = st.text_input(label, value=value)
+        col_index = (col_index + 1) % 3
 
-    with col1:
-        Age = st.text_input('👵 Age')
-    with col2:
-        Sex = st.selectbox('👤 Sex', options=['Male', 'Female'])
-    with col3:
-        ALB = st.text_input('🍶 Albumin Level (ALB)')
-    
-    with col1:
-        ALP = st.text_input('🔬 Alkaline Phosphatase (ALP)')
-    with col2:
-        ALT = st.text_input('🧪 Alanine Aminotransferase (ALT)')
-    with col3:
-        AST = st.text_input('🧬 Aspartate Aminotransferase (AST)')
-    
-    with col1:
-        BIL = st.text_input('🩸 Bilirubin Level (BIL)')
-    with col2:
-        CHE = st.text_input('🧫 Cholinesterase (CHE)')
-    with col3:
-        CHOL = st.text_input('🌟 Cholesterol (CHOL)')
-    
-    with col1:
-        CREA = st.text_input('🧪 Creatinine (CREA)')
-    with col2:
-        GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
-
-    # Button for prediction
+    # Prediction button and result display
     if st.button('Get Hepatitis Test Result'):
         # Check if all fields are filled
-        if not all([Age, Sex, ALB, ALP, ALT, AST, BIL, CHE, CHOL, CREA, GGT]):
+        if not all(st.session_state.input_values.values()):
             st.warning("Please enter all the required information to help us provide a diagnosis.")
         else:
             try:
-                # Convert inputs to appropriate types
-                sex_value = 1 if Sex == 'Male' else 0
+                # Prepare user input
+                sex_value = 1 if st.session_state.input_values['sex'] == 'Male' else 0
+                user_input = [
+                    float(st.session_state.input_values['age']),
+                    sex_value,
+                    float(st.session_state.input_values['alb']),
+                    float(st.session_state.input_values['alp']),
+                    float(st.session_state.input_values['alt']),
+                    float(st.session_state.input_values['ast']),
+                    float(st.session_state.input_values['bil']),
+                    float(st.session_state.input_values['che']),
+                    float(st.session_state.input_values['chol']),
+                    float(st.session_state.input_values['crea']),
+                    float(st.session_state.input_values['ggt'])
+                ]
+
+                # Use the loaded model to predict
+                hepatitis_diagnosis = predict_hepatitis(user_input)
                 
-                # Prepare user input for prediction
-                user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
-                
-                # Predict using the loaded model
-                hepatitis_prediction = hepatitis_model.predict([user_input])
-                
-                # Display the diagnosis
-                diagnosis = ''
-                if hepatitis_prediction[0] == 0:
-                    diagnosis = 'Blood Donor'
-                elif hepatitis_prediction[0] == 1:
-                    diagnosis = 'Hepatitis'
-                elif hepatitis_prediction[0] == 2:
-                    diagnosis = 'Fibrosis'
-                elif hepatitis_prediction[0] == 3:
-                    diagnosis = 'Cirrhosis'
-                elif hepatitis_prediction[0] == 4:
-                    diagnosis = 'Suspect Blood Donor'
-                
-                st.success(f'The diagnosis is: {diagnosis}')
-                
+                # Display the result
+                st.success(f'The diagnosis is: {hepatitis_diagnosis}')
             except Exception as e:
                 st.error(f"Problem occurred: {e}")
