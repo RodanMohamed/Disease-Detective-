@@ -38,7 +38,7 @@ heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
 breast_cancer_model = pickle.load(open('breast_cancer_model1.sav', 'rb'))
 chronic_kidney_model = pickle.load(open('kidney_disease_model.sav', 'rb'))
-
+chronic_kidney_model = pickle.load(open('Hepatitis_disease_model.sav', 'rb'))
 
 # Sidebar navigation with emojis and medical icons
 with st.sidebar:
@@ -58,8 +58,8 @@ with st.sidebar:
     # Create the sidebar menu with the correct arguments
     selected = option_menu(
     menu_title=None,  # You can leave this as None or specify a title
-    options=['🩺 Diabetes Prediction', '❤️ Heart Disease Prediction', '🧠 Parkinson’s Prediction', '🎀 Breast Cancer Prediction','🦠 Kidney Disease Prediction' ],
-    icons=['activity', 'heart', 'person', 'ribbon','droplet'],
+    options=['🩺 Diabetes Prediction', '❤️ Heart Disease Prediction', '🧠 Parkinson’s Prediction', '🎀 Breast Cancer Prediction','🦠 Kidney Disease Prediction','🩸 Hepatitis Disease Prediction' ],
+    icons=['activity', 'heart', 'person', 'ribbon','virus','droplet'],
     menu_icon='hospital',  # Sidebar icon
     default_index=0,
     styles={
