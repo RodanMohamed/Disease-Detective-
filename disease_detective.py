@@ -548,6 +548,7 @@ if selected == '🩸 Hepatitis Disease Prediction':
                 
                 # Display the diagnosis
                 diagnosis = ''
+                create_button_style()
                 if hepatitis_prediction[0] == 0:
                     diagnosis = 'Blood Donor'
                 elif hepatitis_prediction[0] == 1:
