@@ -39,7 +39,7 @@ parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
 breast_cancer_model = pickle.load(open('breast_cancer_model1.sav', 'rb'))
 chronic_kidney_model = pickle.load(open('kidney_disease_model.sav', 'rb'))
 Hepatitis_disease_model = pickle.load(open('Hepatitis_model.sav', 'rb'))
-
+Pneumonia_model = tf.keras.models.load_model('Pneumonia_model.h5','rb')
 # Sidebar navigation with emojis and medical icons
 with st.sidebar:
     # Set the title with custom styling
