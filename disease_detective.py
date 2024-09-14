@@ -467,7 +467,7 @@ if selected == '🦠 Kidney Disease Prediction':
 
 
 # Hapitatis Prediction Page
-Hapitatis Prediction Page
+
 import streamlit as st
 import pickle
 
