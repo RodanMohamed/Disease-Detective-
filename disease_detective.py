@@ -470,7 +470,7 @@ if selected == '🦠 Kidney Disease Prediction':
 
 import streamlit as st
 import pickle
-
+from joblib import load
 # Load the model
 with open('Hepatitis_model.joblib', 'rb') as file:
     hepatitis_model = load(file)
