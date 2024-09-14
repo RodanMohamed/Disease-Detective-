@@ -467,11 +467,13 @@ if selected == '🦠 Kidney Disease Prediction':
 
 
 # Hapitatis Prediction Page
+Hapitatis Prediction Page
 import streamlit as st
-from joblib import load  # Use joblib to load the model
+import pickle
 
-# Load the model using joblib
-hepatitis_model = load('Hepatitis_model.joblib')
+# Load the model
+with open('Hepatitis_model.joblib', 'rb') as file:
+    hepatitis_model = pickle.load(file)
 
 # Define a function to make predictions using the loaded model
 def predict_hepatitis(input_data):
@@ -490,8 +492,19 @@ def predict_hepatitis(input_data):
     return diagnosis_mapping.get(prediction[0], 'Unknown')
 
 # Hepatitis Prediction Page
+import pickle
+import streamlit as st
+
+# Load the model from the file
+with open('Hepatitis_model.joblib', 'rb') as file:
+    hepatitis_model = pickle.load(file)
+
+# Hepatitis Prediction Page
 if selected == '🩸 Hepatitis Disease Prediction':
-    # Define columns for inputs
+   # st.header('🩸 Hepatitis Disease Prediction')
+   # st.write("Hepatitis Prediction Page Loaded")
+
+    # Define columns
     col1, col2, col3 = st.columns(3)
 
     # Input fields
@@ -517,7 +530,7 @@ if selected == '🩸 Hepatitis Disease Prediction':
         CREA = st.text_input('🧪 Creatinine (CREA)')
     with col2:
         GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
-
+    create_button_style()
     # Button to get prediction
     if st.button('Get Hepatitis Test Result'):
         # Check if all fields are filled
@@ -532,10 +545,23 @@ if selected == '🩸 Hepatitis Disease Prediction':
                 user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
                 
                 # Predict using the loaded model
-                hepatitis_prediction = predict_hepatitis(user_input)
+                hepatitis_prediction = hepatitis_model.predict([user_input])
                 
                 # Display the diagnosis
-                st.success(f'The diagnosis is: {hepatitis_prediction}')
+                diagnosis = ''
+                
+                if hepatitis_prediction[0] == 0:
+                    diagnosis = 'Blood Donor'
+                elif hepatitis_prediction[0] == 1:
+                    diagnosis = 'Hepatitis'
+                elif hepatitis_prediction[0] == 2:
+                    diagnosis = 'Fibrosis'
+                elif hepatitis_prediction[0] == 3:
+                    diagnosis = 'Cirrhosis'
+                elif hepatitis_prediction[0] == 4:
+                    diagnosis = 'Suspect Blood Donor'
+                
+                st.success(f'The diagnosis is: {diagnosis}')
                 
             except Exception as e:
                 st.error(f"Problem occurred: {e}")
