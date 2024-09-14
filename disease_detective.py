@@ -467,11 +467,10 @@ if selected == '🦠 Kidney Disease Prediction':
 
 
 # Hapitatis Prediction Page
-# Hepatitis Prediction Page
 import streamlit as st
 from joblib import load  # Use joblib to load the model
 
-# Load the model using joblib (not pickle)
+# Load the model using joblib
 hepatitis_model = load('Hepatitis_model.joblib')
 
 # Define a function to make predictions using the loaded model
@@ -533,20 +532,10 @@ if selected == '🩸 Hepatitis Disease Prediction':
                 user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
                 
                 # Predict using the loaded model
-                hepatitis_prediction = hepatitis_model.predict([user_input])
+                hepatitis_prediction = predict_hepatitis(user_input)
                 
-                # Map prediction result to diagnosis
-                diagnosis_mapping = {
-                    0: 'Blood Donor',
-                    1: 'Hepatitis',
-                    2: 'Fibrosis',
-                    3: 'Cirrhosis',
-                    4: 'Suspect Blood Donor'
-                }
-                
-                diagnosis = diagnosis_mapping.get(hepatitis_prediction[0], 'Unknown')
-                
-                st.success(f'The diagnosis is: {diagnosis}')
+                # Display the diagnosis
+                st.success(f'The diagnosis is: {hepatitis_prediction}')
                 
             except Exception as e:
                 st.error(f"Problem occurred: {e}")
