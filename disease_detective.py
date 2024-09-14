@@ -519,7 +519,8 @@ if selected == '🩸 Hepatitis Disease Prediction':
     # Define columns for inputs
     col1, col2, col3 = st.columns(3)
 
-    # Input fields
+   
+  # Input fields
     with col1:
         Age = st.text_input('👵 Age')
     with col2:
