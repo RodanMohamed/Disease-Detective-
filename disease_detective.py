@@ -467,6 +467,7 @@ if selected == '🦠 Kidney Disease Prediction':
 
 
 # Hapitatis Prediction Page
+# Hapitatis Prediction Page
 import streamlit as st
 import pickle
 
@@ -491,44 +492,76 @@ def predict_hepatitis(input_data):
     return diagnosis_mapping.get(prediction[0], 'Unknown')
 
 # Hepatitis Prediction Page
+import pickle
+import streamlit as st
+
+# Load the model from the file
+with open('Hepatitis_model .sav', 'rb') as file:
+    hepatitis_model = pickle.load(file)
+
+# Hepatitis Prediction Page
 if selected == '🩸 Hepatitis Disease Prediction':
-    page_header('🩸 Hepatitis Disease Prediction')
+   # st.header('🩸 Hepatitis Disease Prediction')
+   # st.write("Hepatitis Prediction Page Loaded")
+
+    # Define columns
     col1, col2, col3 = st.columns(3)
 
+    # Input fields
     with col1:
-        Age = st.text_input('👴 Age')
+        Age = st.text_input('👵 Age')
     with col2:
-        Sex = st.text_input('⚤ Sex')
+        Sex = st.selectbox('👤 Sex', options=['Male', 'Female'])
     with col3:
-        ALB = st.text_input('🩸 Albumin')
+        ALB = st.text_input('🍶 Albumin Level (ALB)')
     with col1:
-        ALP = st.text_input('🩸 Alkaline Phosphatase')
+        ALP = st.text_input('🔬 Alkaline Phosphatase (ALP)')
     with col2:
-        ALT = st.text_input('🩸 Alanine Aminotransferase')
+        ALT = st.text_input('🧪 Alanine Aminotransferase (ALT)')
     with col3:
-        AST = st.text_input('🩸 Aspartate Aminotransferase')
+        AST = st.text_input('🧬 Aspartate Aminotransferase (AST)')
     with col1:
-        BIL = st.text_input('🩸 Bilirubin')
+        BIL = st.text_input('🩸 Bilirubin Level (BIL)')
     with col2:
-        CHE = st.text_input('🩸 Cholinesterase')
+        CHE = st.text_input('🧫 Cholinesterase (CHE)')
     with col3:
-        CHOL = st.text_input('🩸 Cholesterol')
+        CHOL = st.text_input('🌟 Cholesterol (CHOL)')
     with col1:
-        CREA = st.text_input('🩸 Creatinine')
+        CREA = st.text_input('🧪 Creatinine (CREA)')
     with col2:
-        GGT = st.text_input('🩸 Gamma-Glutamyl Transferase')
-
-    hep_diagnosis = ''
+        GGT = st.text_input('🧪 Gamma-Glutamyl Transferase (GGT)')
     create_button_style()
-
+    # Button to get prediction
     if st.button('Get Hepatitis Test Result'):
+        # Check if all fields are filled
         if not all([Age, Sex, ALB, ALP, ALT, AST, BIL, CHE, CHOL, CREA, GGT]):
             st.warning("Please enter all the required information to help us provide a diagnosis.")
         else:
             try:
-                user_input = [float(Age), float(Sex), float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
-                hep_prediction = Hepatitis_disease_model.predict([user_input])
-                hep_diagnosis = 'Hepatitis detected' if hep_prediction[0] == 1 else 'No Hepatitis detected'
-                st.success(hep_diagnosis)
+                # Convert Sex to numerical value (assuming 0 for Female and 1 for Male)
+                sex_value = 1 if Sex == 'Male' else 0
+                
+                # Prepare user input
+                user_input = [float(Age), sex_value, float(ALB), float(ALP), float(ALT), float(AST), float(BIL), float(CHE), float(CHOL), float(CREA), float(GGT)]
+                
+                # Predict using the loaded model
+                hepatitis_prediction = hepatitis_model.predict([user_input])
+                
+                # Display the diagnosis
+                diagnosis = ''
+                
+                if hepatitis_prediction[0] == 0:
+                    diagnosis = 'Blood Donor'
+                elif hepatitis_prediction[0] == 1:
+                    diagnosis = 'Hepatitis'
+                elif hepatitis_prediction[0] == 2:
+                    diagnosis = 'Fibrosis'
+                elif hepatitis_prediction[0] == 3:
+                    diagnosis = 'Cirrhosis'
+                elif hepatitis_prediction[0] == 4:
+                    diagnosis = 'Suspect Blood Donor'
+                
+                st.success(f'The diagnosis is: {diagnosis}')
+                
             except Exception as e:
                 st.error(f"Problem occurred: {e}")
