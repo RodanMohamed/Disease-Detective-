@@ -38,7 +38,7 @@ heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
 breast_cancer_model = pickle.load(open('breast_cancer_model1.sav', 'rb'))
 chronic_kidney_model = pickle.load(open('kidney_disease_model.sav', 'rb'))
-Hepatitis_disease_model = pickle.load(open('Hepatitis_model.joblib', 'rb'))
+Hepatitis_disease_model = pickle.load(open('Hepatitis_model .sav', 'rb'))
 
 # Sidebar navigation with emojis and medical icons
 with st.sidebar:
@@ -472,7 +472,7 @@ import streamlit as st
 import pickle
 
 # Load the model
-with open('Hepatitis_model.joblib', 'rb') as file:
+with open('Hepatitis_model .sav', 'rb') as file:
      hepatitis_model = pickle.load(file)
 
 # Define a function to make predictions using the loaded model
@@ -496,7 +496,7 @@ import pickle
 import streamlit as st
 
 # Load the model from the file
-with open('Hepatitis_model.joblib', 'rb') as file:
+with open('Hepatitis_model .sav', 'rb') as file:
     hepatitis_model = pickle.load(file)
 
 # Hepatitis Prediction Page
